@@ -1,6 +1,6 @@
 [package]
 name = "jnit"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2024"
 
 [dependencies]
@@ -8,3 +8,4 @@ clap = {
     version = "4.6.7",
     features = ["derive"]
 }
+sysinfo = "0.39.6"

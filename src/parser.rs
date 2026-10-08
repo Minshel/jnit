@@ -6,9 +6,9 @@ fn flush(process: &mut String, processes: &mut Vec<String>) {
     process.clear();
 }
 
-pub fn parse_processes(content: String) -> Vec<String> {
+pub fn parse_processes(content: String, req_group: String) -> Vec<String> {
     let mut processes: Vec<String> = vec![];
-    let mut group = String::new();
+    let (mut in_group, mut found) = (false, false);
     let mut process = String::new();
     let chars: Vec<char> = content.chars().collect();
     let mut pos = 0;
@@ -26,20 +26,20 @@ pub fn parse_processes(content: String) -> Vec<String> {
                 pos += 1;
             }
 
-            let name = name.trim();
+            let name = name.trim().to_string();
+            flush(&mut process, &mut processes);
             if name.is_empty() {
-                flush(&mut process, &mut processes);
-                group.clear();
+                in_group = false;
             } else {
-                if group.is_empty() && name != "start" {
-                    panic!("jnit: 'start' process group not founded, it should be first in file");
+                in_group = name == req_group;
+                if in_group {
+                    found = true;
                 }
-                group = name.to_string();
             }
             continue;
         }
 
-        if !group.is_empty() {
+        if in_group {
             match chars[pos] {
                 ';' => flush(&mut process, &mut processes),
                 '\r' => {}
@@ -50,5 +50,9 @@ pub fn parse_processes(content: String) -> Vec<String> {
     }
 
     flush(&mut process, &mut processes);
+
+    if !found {
+        panic!("JNit: requested process group '{}' not found in config file", req_group);
+    }
     processes
 }

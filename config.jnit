@@ -1,2 +1,8 @@
 {start}
-C:\MapBrowser\MapBrowser.exe
+explorer.exe C:\Users\Max\AppData;
+
+{other}
+explorer.exe C:\Users\Max;
+
+{cpp}
+D:\RustProjects\jnit\main.exe;

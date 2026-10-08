@@ -1,2 +1,2 @@
-- [ ] nothing
-- [x] nothing
+- [x] --group (group) argument
+- [x] Restarting process if it dies
